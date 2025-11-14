@@ -1,63 +1,48 @@
 package com.dev.arthur.games_tracker.services;
 
-import com.dev.arthur.games_tracker.controllers.dtos.BestDealDTO;
-import com.dev.arthur.games_tracker.controllers.dtos.PriceResultDTO;
-import com.dev.arthur.games_tracker.controllers.dtos.SearchResultDTO;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.MediaType;
+import com.dev.arthur.games_tracker.entities.Game;
+import com.dev.arthur.games_tracker.repositories.GameRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 
-import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class GameService {
-    private final WebClient webClient = WebClient.create("https://api.isthereanydeal.com");
 
-    @Value("${api.key}")
-    private String apiKey;
+    private final GameRepository gameRepository;
 
-    private Mono<String> findGameIdByTitle(String title) {
-        return webClient.get()
-                .uri(uriBuilder -> uriBuilder.path("/games/search/v1")
-                        .queryParam("key", apiKey)
-                        .queryParam("title", title)
-                        .build())
-                .retrieve()
-                .bodyToFlux(SearchResultDTO.class)
-                .next()
-                .map(SearchResultDTO::getId);
+    public GameService(GameRepository gameRepository) {
+        this.gameRepository = gameRepository;
     }
 
-    private BestDealDTO extractBestDeal(PriceResultDTO priceResultDTO) {
-        return priceResultDTO.getDeals().stream()
-                .min(Comparator.comparing(dealDTO -> dealDTO.getPrice().getAmount()))
-                .map(dealDTO -> new BestDealDTO(
-                        dealDTO.getShop().getName(),
-                        dealDTO.getPrice().getAmount(),
-                        dealDTO.getUrl()
-                ))
-                .orElse(null);
+    public List<Game> getGames() {
+        return gameRepository.findAll();
     }
 
-    private Mono<BestDealDTO> findBestDealById(String id) {
-        return webClient.post()
-                .uri(uriBuilder -> uriBuilder
-                        .path("/games/prices/v3")
-                        .queryParam("key", apiKey)
-                        .queryParam("country", "BR")
-                        .build())
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(new String[]{id})
-                .retrieve()
-                .bodyToFlux(PriceResultDTO.class)
-                .next()
-                .mapNotNull(this::extractBestDeal);
+    public Optional<Game> getGame(String id) {
+        return gameRepository.findById(id);
     }
 
-    public Mono<BestDealDTO> findBestDealByTitle(String title) {
-        return findGameIdByTitle(title).flatMap(this::findBestDealById);
+    public Game saveGame(Game game) {
+        return gameRepository.save(game);
     }
 
+    public Game updateGame(Game game) {
+        Game existingGame = gameRepository.findById(game.getId()).orElse(null);
+
+        assert existingGame != null;
+        existingGame.setTitle(game.getTitle());
+        existingGame.setScore(game.getScore());
+        existingGame.setYear(game.getYear());
+        existingGame.setGenre(game.getGenre());
+        existingGame.setNotes(game.getNotes());
+        existingGame.setPlatform(game.getPlatform());
+
+        return gameRepository.save(existingGame);
+    }
+
+    public void deleteGame(String id) {
+        gameRepository.deleteById(id);
+    }
 }
