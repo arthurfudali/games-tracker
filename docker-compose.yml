@@ -8,6 +8,8 @@ services:
       - mongo
     environment:
       SPRING_DATA_MONGODB_URI: mongodb://root:root@mongo:27017/gamelist?authSource=admin
+      API_KEY: ${API_KEY}
+
 
   mongo:
     image: mongo:7
