@@ -4,24 +4,6 @@ services:
     container_name: games_api
     ports:
       - "8080:8080"
-    depends_on:
-      - mongo
     environment:
-      SPRING_DATA_MONGODB_URI: mongodb://root:root@mongo:27017/gamelist?authSource=admin
+      SPRING_DATA_MONGODB_URI: ${MONGO_URI}
       API_KEY: ${API_KEY}
-
-
-  mongo:
-    image: mongo:7
-    container_name: mongodb_games
-    restart: always
-    ports:
-      - "27017:27017"
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: root
-    volumes:
-      - mongo_data:/data/db
-
-volumes:
-  mongo_data:
