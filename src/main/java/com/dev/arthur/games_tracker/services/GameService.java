@@ -20,6 +20,10 @@ public class GameService {
         return gameRepository.findAll();
     }
 
+    public List<Game> getGamesByTitle(String title) {
+        return gameRepository.findGamesByTitleContainingIgnoreCase(title);
+    }
+
     public Optional<Game> getGame(String id) {
         return gameRepository.findById(id);
     }

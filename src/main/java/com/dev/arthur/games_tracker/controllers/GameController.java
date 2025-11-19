@@ -29,6 +29,7 @@ public class GameController {
         return gameAPIService.findBestDealByTitle(title);
     }
 
+
     @GetMapping("/bestprice/id/{id}")
     public Mono<BestDealDTO> getBestPriceById(@PathVariable String id) {
         Game game = gameRepository.findById(id).orElse(null);
@@ -46,6 +47,11 @@ public class GameController {
     @GetMapping
     public List<Game> getAllGames() {
         return gameService.getGames();
+    }
+
+    @GetMapping("/title/{title}")
+    public List<Game> getAllGamesByTitle(@PathVariable String title) {
+        return gameRepository.findGamesByTitleContainingIgnoreCase(title);
     }
 
     @GetMapping("/{id}")
