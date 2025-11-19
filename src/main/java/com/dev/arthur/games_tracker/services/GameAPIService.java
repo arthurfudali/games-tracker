@@ -28,7 +28,7 @@ public class GameAPIService {
                 .retrieve()
                 .bodyToFlux(SearchResultDTO.class)
                 .next()
-                .map(SearchResultDTO::getId);
+                .map(SearchResultDTO::id);
     }
 
     private BestDealDTO extractBestDeal(PriceResultDTO priceResultDTO) {
