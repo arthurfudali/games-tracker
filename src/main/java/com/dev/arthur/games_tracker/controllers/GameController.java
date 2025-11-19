@@ -39,27 +39,27 @@ public class GameController {
     }
 
     @PostMapping
-    public Game create(@RequestBody Game game) {
+    public Game createGame(@RequestBody Game game) {
         return gameService.saveGame(game);
     }
 
     @GetMapping
-    public List<Game> list() {
+    public List<Game> getAllGames() {
         return gameService.getGames();
     }
 
     @GetMapping("/{id}")
-    public Optional<Game> get(@PathVariable String id) {
+    public Optional<Game> getGameById(@PathVariable String id) {
         return gameService.getGame(id);
     }
 
     @PutMapping("/{id}")
-    public Game update(@PathVariable String id, @RequestBody Game game) {
+    public Game updateGame(@PathVariable String id, @RequestBody Game game) {
         return gameService.updateGame(game);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable String id) {
+    public void deleteGame(@PathVariable String id) {
         gameService.deleteGame(id);
     }
 
