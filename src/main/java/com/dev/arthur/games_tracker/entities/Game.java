@@ -1,6 +1,5 @@
 package com.dev.arthur.games_tracker.entities;
 
-import com.dev.arthur.games_tracker.entities.enums.Genre;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +23,6 @@ public class Game {
     private Integer score;
     private String notes;
     private Integer year;
-    private List<Genre> genre;
+    private List<String> genres;
 
 }

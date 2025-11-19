@@ -35,7 +35,7 @@ public class GameService {
         existingGame.setTitle(game.getTitle());
         existingGame.setScore(game.getScore());
         existingGame.setYear(game.getYear());
-        existingGame.setGenre(game.getGenre());
+        existingGame.setGenres(game.getGenres());
         existingGame.setNotes(game.getNotes());
         existingGame.setPlatform(game.getPlatform());
 
