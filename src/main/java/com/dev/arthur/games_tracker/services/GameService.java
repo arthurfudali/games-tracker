@@ -38,6 +38,8 @@ public class GameService {
         existingGame.setGenres(game.getGenres());
         existingGame.setNotes(game.getNotes());
         existingGame.setPlatform(game.getPlatform());
+        existingGame.setStartDate(game.getStartDate());
+        existingGame.setEndDate(game.getEndDate());
 
         return gameRepository.save(existingGame);
     }
