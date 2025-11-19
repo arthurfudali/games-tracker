@@ -1,14 +1,6 @@
 package com.dev.arthur.games_tracker.controllers.dtos;
 
-import lombok.Getter;
-import lombok.Setter;
+public record SearchResultDTO(String id, String slug, String title, boolean mature) {
 
-@Getter
-@Setter
-public class SearchResultDTO {
-    private String id;
-    private String slug;
-    private String title;
-    private boolean mature;
 
 }
